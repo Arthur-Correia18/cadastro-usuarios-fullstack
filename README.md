@@ -2,34 +2,94 @@
 
 Aplicação full stack para cadastro, listagem e remoção de usuários, com frontend em React e backend em Node.js.
 
-## Tecnologias utilizadas
+🛠️ Tecnologias utilizadas
 
-### Frontend
+    - Frontend
+    |
 - React
 - Vite
 - Axios
 - CSS
 
-### Backend
+    - Backend
+    |
 - Node.js
 - Express
 - Prisma
-- MongoDB
 - CORS
 
-## Funcionalidades
-- Cadastrar usuários
-- Listar usuários
-- Deletar usuários
-- Integração entre frontend e API
+    - Banco de dados
+    |
+- MongoDB
 
-## Estrutura do projeto
+
+⚙️ Funcionalidades
+
+  🎨 Frontend
+
+- Formulário de cadastro
+- Validação de campos
+- Listagem de usuários
+- Botão de deletar
+- Mensagens de erro/sucesso (toast)
+- Loading no botão
+
+  🔧 Backend
+
+POST /usuarios → Criar usuário
+GET /usuarios → Listar usuários
+PUT /usuarios/:id → Atualizar usuário
+DELETE /usuarios/:id → Deletar usuário
+
+    🔐 Validações
+
+  -Frontend
+Nome obrigatório
+Idade obrigatória
+Idade maior que 0
+E-mail válido
+Bloqueio de e-mail duplicado
+
+    - Backend
+
+Nome obrigatório
+E-mail obrigatório
+Idade obrigatória
+Idade maior que 0
+Validação de e-mail
+Tratamento de e-mail duplicado
+
+🗃️ Banco de dados
+
+Modelo User:
+
+model User {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
+  name  String
+  age   Int
+}
+
+## 🗂️ Estrutura do projeto
 
 ```bash
 cadastro-usuarios-fullstack/
 ├── API/
-├── cadastro-de-usuarios/
-└── .gitignore
+│   ├── prisma/
+│   │   └── schema.prisma
+│   ├── package.json
+│   └── server.js
+└── cadastro-de-usuarios/
+    ├── public/
+    ├── src/
+    │   ├── pages/
+    │   │   └── Home/
+    │   ├── services/
+    │   ├── assets/
+    │   ├── index.css
+    │   └── main.jsx
+    ├── package.json
+    └── index.html
 Como executar o projeto
 1. Clonar o repositório
 git clone https://github.com/Arthur-Correia18/cadastro-usuarios-fullstack.git
@@ -58,9 +118,12 @@ Exemplo de usuário
   "age": 20,
   "email": "arthur@email.com"
 }
-Objetivo do projeto
-
-Este projeto foi desenvolvido para praticar conceitos de desenvolvimento full stack, integração com API, manipulação de dados e operações CRUD.
+🎯 Objetivo
+Praticar CRUD completo
+Integração frontend + backend
+Uso do Prisma
+Consumo de API
+Organização full stack
 
 Autor
 
