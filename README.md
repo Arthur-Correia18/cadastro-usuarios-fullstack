@@ -118,6 +118,12 @@ Exemplo de usuário
   "age": 20,
   "email": "arthur@email.com"
 }
+
+## Deploy
+
+Frontend: [https://cadastrousuariosfullstack.vercel.app/]
+Backend: [https://cadastro-usuarios-fullstack.onrender.com]
+
 🎯 Objetivo
 Praticar CRUD completo
 Integração frontend + backend
