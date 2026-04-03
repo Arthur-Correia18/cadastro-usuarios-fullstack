@@ -71,11 +71,10 @@ form {
   }
 }
 
-
-
-
-
-
+.button:disabled {
+  opacity: 0.9;
+  cursor: not-allowed;
+}
 
 .delete-btn {
   background: transparent;
@@ -91,4 +90,77 @@ form {
   width: 22px;
   height: 22px;
   display: block;
+}
+
+.error-message {
+  color: #ff4d4d;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 15px 0;
+}
+
+.success-message {
+  color: #22c55e;
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 99999;
+  width: auto;
+  height: auto;
+}
+
+.toast-message {
+  min-width: 260px;
+  max-width: 320px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.toast-error {
+  background: #ef4444;
+}
+
+.toast-success {
+  background: #22c55e;
+}
+
+.toast-message.show {
+  animation: slideIn 0.7s ease forwards;
+}
+
+.toast-message.hide {
+  animation: slideOut 0.7s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
 }
