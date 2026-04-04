@@ -1,118 +1,313 @@
-.container{
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #0f1020, #191b2f);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.layout {
+  min-height: 100vh;
+  position: relative;
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1200;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  background: #6366f1;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.menu-toggle:hover {
+  opacity: 0.9;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 240px;
+  height: 100vh;
+  background-color: #111827;
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 1300;
+  transition: left 0.3s ease;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.sidebar-title {
+  color: #ffffff;
+  font-size: 24px;
+  margin: 0;
+}
+
+.close-menu {
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.menu-button {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  background-color: #1f2937;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.menu-button:hover {
+  background-color: #374151;
+}
+
+.menu-button.active {
+  background-color: #6366f1;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1250;
+}
+
+.content {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding-top: 100px;
+  padding: 60px 20px 30px;
 }
 
 h1 {
   color: #fff;
-  font-size: 27px;
-
+  font-size: 30px;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
-form {
+.section-box {
+  width: 100%;
+  max-width: 420px;
+}
+
+.section-title {
+  color: #fff;
+  font-size: 24px;
+  margin: 0 0 18px 0;
+  text-align: center;
+}
+
+.section-subtitle {
+  color: #9ca3af;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  text-align: left;
+}
+
+form,
+.admin-box {
   display: flex;
   flex-direction: column;
-  gap:30px;
+  gap: 18px;
   padding: 30px;
-  border-radius: 13px;
+  border-radius: 16px;
   background-color: #24233e;
-  max-width: 50%;
-  width: 400px;
-  margin-bottom: 20px;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
 
-  & button{
-    border-radius: 30px;
-    background-color: #8b8ae1;
-    height: 40px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    color: #fff;
-  }
+form input,
+.admin-box input {
+  border: 1px solid #48456c;
+  border-radius: 30px;
+  height: 44px;
+  background-color: #363653;
+  color: #fff;
+  font-size: 16px;
+  padding: 0 14px;
+  outline: none;
+}
 
-  & button:hover{
-    opacity: 0.7;
-    font-size: 14px;
-    color: #fff;
+form input::placeholder,
+.admin-box input::placeholder {
+  color: #aaa;
+}
 
-  }
+form button,
+.admin-button,
+.logout-button {
+  border-radius: 30px;
+  height: 44px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+  transition: 0.3s;
+}
 
-  & input {
-    border:1px solid #48456c;
-    border-radius: 30px;
-    height: 40px;
-    background-color: #363653;
-    color:#fff;
-    font-size: 16px;
-    padding-left: 10px;
-    outline: none;
-  }
+form button {
+  background-color: #8b8ae1;
+}
+
+.admin-button {
+  background-color: #6366f1;
+}
+
+.logout-button {
+  background-color: #ef4444;
+}
+
+form button:hover,
+.admin-button:hover,
+.logout-button:hover {
+  opacity: 0.85;
 }
 
 .card {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: #24233e;
-  margin: 10px;
-  padding: 10px;
-  width: 400px;
-  border-radius: 13px;
- 
-  & p {
-    color: #fff;
-    font-weight: bold;
-
-    & span {
-      font-weight: normal;
-    }
-
-  }
+  margin: 10px 0;
+  padding: 18px;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.button:disabled {
-  opacity: 0.9;
-  cursor: not-allowed;
+.card p {
+  color: #fff;
+  font-weight: bold;
+  margin: 6px 0;
+  word-break: break-word;
+}
+
+.card p span {
+  font-weight: normal;
+  color: #d1d5db;
 }
 
 .delete-btn {
   background: transparent;
   border: none;
   cursor: pointer;
+  transition: 0.3s;
 }
 
-.delete-btn:hover{
+.delete-btn:hover {
   opacity: 0.5;
 }
 
 .delete-btn img {
   width: 22px;
   height: 22px;
-  display: block;
 }
 
-.error-message {
-  color: #ff4d4d;
-  font-size: 16px;
-  font-weight: 600;
-  margin: 15px 0;
+.admin-card {
+  background: #2f2d4d;
+  border-radius: 14px;
+  padding: 18px;
 }
 
-.success-message {
-  color: #22c55e;
-  font-size: 17px;
+.admin-card p {
+  color: #fff;
+  margin: 8px 0;
   font-weight: bold;
+}
+
+.admin-card p span {
+  font-weight: normal;
+  color: #d1d5db;
+}
+
+.admin-status {
+  color: #22c55e !important;
+}
+
+.admin-email-line,
+.admin-role-line {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.blur-email {
+  display: inline-block;
+  user-select: none;
+  transition: 0.3s;
+}
+
+.strong-blur {
+  filter: blur(4.8px);
+}
+
+.strong-blur:hover {
+  filter: blur(2.8px);
+}
+
+.users-header {
+  width: 100%;
+  max-width: 420px;
   margin-bottom: 10px;
+}
+
+.users-count {
+  color: #cbd5e1;
+  text-align: center;
+  margin: 0 0 16px 0;
+}
+
+.empty-box {
+  width: 100%;
+  max-width: 420px;
+  background-color: #24233e;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  color: #d1d5db;
 }
 
 .toast-container {
   position: fixed;
   top: 20px;
-  left: 20px;
-  z-index: 99999;
-  width: auto;
-  height: auto;
+  left: 80px;
+  z-index: 1400;
 }
 
 .toast-message {
@@ -135,32 +330,22 @@ form {
   background: #22c55e;
 }
 
-.toast-message.show {
-  animation: slideIn 0.7s ease forwards;
-}
-
-.toast-message.hide {
-  animation: slideOut 0.7s ease forwards;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-120%);
-    opacity: 0;
+@media (max-width: 768px) {
+  .content {
+    padding: 80px 14px 20px;
   }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
 
-@keyframes slideOut {
-  from {
-    transform: translateX(0);
-    opacity: 1;
+  h1 {
+    font-size: 26px;
   }
-  to {
-    transform: translateX(-120%);
-    opacity: 0;
+
+  .menu-toggle {
+    top: 14px;
+    left: 14px;
+  }
+
+  .toast-container {
+    top: 74px;
+    left: 14px;
   }
 }
