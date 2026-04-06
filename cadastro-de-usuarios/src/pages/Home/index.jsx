@@ -56,21 +56,39 @@ function Home() {
   }
 
   async function getUsers() {
-    const token = localStorage.getItem("user_token");
-
-    if (!token) {
-      setUsers([]);
-      return;
-    }
+    const userToken = localStorage.getItem("user_token");
+    const adminToken = localStorage.getItem("admin_token");
 
     try {
-      const response = await api.get("/usuarios", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      let response;
 
-      setUsers(response.data);
+      if (adminToken) {
+        response = await api.get("/usuarios", {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        });
+      } else if (userToken) {
+        response = await api.get("/usuarios", {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+      } else {
+        setUsers([]);
+        return;
+      }
+
+      let data = response.data;
+
+      if (userToken && loggedUserData) {
+        data = [
+          ...data.filter((user) => user.email === loggedUserData.email),
+          ...data.filter((user) => user.email !== loggedUserData.email),
+        ];
+      }
+
+      setUsers(data);
     } catch (error) {
       console.log(error);
       setUsers([]);
@@ -204,8 +222,6 @@ function Home() {
       loginEmail.current.value = "";
       loginPassword.current.value = "";
 
-      await getUsers();
-
       setSuccessMessage("Login realizado com sucesso!");
       setErrorMessage("");
       setActiveSection("users");
@@ -254,6 +270,7 @@ function Home() {
 
       setSuccessMessage("Administrador logado com sucesso!");
       setErrorMessage("");
+      setActiveSection("users");
     } catch (error) {
       console.log(error);
       setErrorMessage(error.response?.data?.message || "Erro ao fazer login.");
@@ -304,10 +321,10 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    if (isLoggedUser) {
+    if (isLoggedUser || isAdmin) {
       getUsers();
     }
-  }, [isLoggedUser]);
+  }, [isLoggedUser, isAdmin, loggedUserData]);
 
   useEffect(() => {
     if (!errorMessage) return;
@@ -468,7 +485,7 @@ function Home() {
                   </p>
 
                   <p className="admin-role-line">
-                    E-mail: <span>{maskEmail(loggedUserData?.email)}</span>
+                    E-mail: <span>{loggedUserData?.email}</span>
                   </p>
 
                   <p className="admin-role-line">
@@ -486,9 +503,9 @@ function Home() {
 
         {activeSection === "users" && (
           <section className="section-box">
-            {!isLoggedUser ? (
+            {!isLoggedUser && !isAdmin ? (
               <div className="empty-box">
-                <p>Faça login com seu usuário para ver a lista.</p>
+                <p>Faça login com seu usuário ou admin para ver a lista.</p>
               </div>
             ) : (
               <>
@@ -502,31 +519,47 @@ function Home() {
                     <p>Nenhum usuário cadastrado ainda.</p>
                   </div>
                 ) : (
-                  users.map((user) => (
-                    <div key={user.id} className="card">
-                      <div>
-                        <p>
-                          Nome: <span>{user.name}</span>
-                        </p>
-                        <p>
-                          Idade: <span>{user.age}</span>
-                        </p>
-                        <p>
-                          E-mail: <span className="blur-email strong-blur">{maskEmail(user.email)}</span>
-                        </p>
-                      </div>
+                  users.map((user) => {
+                    const isCurrentUser = user.email === loggedUserData?.email;
 
-                      <button
-                        type="button"
-                        onClick={() => deleteUsers(user.id)}
-                        className="delete-btn"
-                        disabled={!isAdmin}
-                        title={isAdmin ? "Deletar usuário" : "Somente admin pode deletar"}
-                      >
-                        <img src={Trash} alt="Deletar usuário" />
-                      </button>
-                    </div>
-                  ))
+                    return (
+                      <div key={user.id} className="card">
+                        <div>
+                          <p>
+                            Nome: <span>{user.name}</span>
+                          </p>
+
+                          <p>
+                            Idade: <span>{user.age}</span>
+                          </p>
+
+                          <p>
+                            E-mail:{" "}
+                            {isCurrentUser ? (
+                              <span>
+                                {user.email}{" "}
+                                <span className="you-badge">(Você)</span>
+                              </span>
+                            ) : (
+                              <span className="blur-email strong-blur">
+                                {maskEmail(user.email)}
+                              </span>
+                            )}
+                          </p>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => deleteUsers(user.id)}
+                          className="delete-btn"
+                          disabled={!isAdmin}
+                          title={isAdmin ? "Deletar usuário" : "Somente admin pode deletar"}
+                        >
+                          <img src={Trash} alt="Deletar usuário" />
+                        </button>
+                      </div>
+                    );
+                  })
                 )}
               </>
             )}
@@ -541,7 +574,11 @@ function Home() {
               {!isAdmin ? (
                 <>
                   <input ref={adminEmail} placeholder="E-mail do administrador" />
-                  <input ref={adminPassword} type="password" placeholder="Senha do administrador" />
+                  <input
+                    ref={adminPassword}
+                    type="password"
+                    placeholder="Senha do administrador"
+                  />
 
                   <button
                     type="button"

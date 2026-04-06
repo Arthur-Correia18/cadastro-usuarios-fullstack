@@ -281,6 +281,12 @@ form button:hover,
   filter: blur(2.8px);
 }
 
+.you-badge {
+  color: #22c55e !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .users-header {
   width: 100%;
   max-width: 420px;
