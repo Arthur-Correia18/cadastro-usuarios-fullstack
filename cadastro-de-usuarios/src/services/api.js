@@ -5,11 +5,7 @@ const isLocalhost =
   window.location.hostname === '127.0.0.1'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
-    ? import.meta.env.VITE_API_URL
-    : isLocalhost
-    ? 'http://localhost:3000'
-    : 'https://cadastro-usuarios-fullstack.onrender.com'
+  baseURL: "http://localhost:3000"
 })
 
-export default api
+export default api;

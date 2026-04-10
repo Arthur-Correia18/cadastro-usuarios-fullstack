@@ -13,6 +13,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.send("API rodando 🚀");
+});
+
 function validateEmail(email) {
   return /\S+@\S+\.\S+/.test(email);
 }
@@ -77,7 +81,6 @@ function adminOnly(req, res, next) {
   next();
 }
 
-// CADASTRO DE USUÁRIO COMUM
 app.post("/usuarios", async (req, res) => {
   try {
     const { name, age, email, password } = req.body;
@@ -129,7 +132,7 @@ app.post("/usuarios", async (req, res) => {
     const user = await prisma.user.create({
       data: {
         name,
-        age: String(age),
+        age: Number(age),
         email: email.toLowerCase(),
         password: hashedPassword,
         role: "user",
@@ -147,14 +150,14 @@ app.post("/usuarios", async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.log("ERRO POST /usuarios:", error);
     return res.status(500).json({
       message: "Erro ao cadastrar usuário.",
+      error: error.message,
     });
   }
 });
 
-// LOGIN DE USUÁRIO COMUM
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -204,14 +207,14 @@ app.post("/login", async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.log("ERRO POST /login:", error);
     return res.status(500).json({
       message: "Erro ao fazer login.",
+      error: error.message,
     });
   }
 });
 
-// LOGIN DO ADMIN
 app.post("/admin/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -267,14 +270,14 @@ app.post("/admin/login", async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.log("ERRO POST /admin/login:", error);
     return res.status(500).json({
       message: "Erro ao fazer login do admin.",
+      error: error.message,
     });
   }
 });
 
-// DADOS DO USUÁRIO LOGADO
 app.get("/me", authMiddleware, async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
@@ -292,14 +295,14 @@ app.get("/me", authMiddleware, async (req, res) => {
 
     return res.status(200).json(user);
   } catch (error) {
-    console.log(error);
+    console.log("ERRO GET /me:", error);
     return res.status(500).json({
       message: "Erro ao buscar usuário logado.",
+      error: error.message,
     });
   }
 });
 
-// DADOS DO ADMIN LOGADO
 app.get("/admin/me", authMiddleware, adminOnly, async (req, res) => {
   try {
     const admin = await prisma.user.findUnique({
@@ -317,14 +320,14 @@ app.get("/admin/me", authMiddleware, adminOnly, async (req, res) => {
 
     return res.status(200).json(admin);
   } catch (error) {
-    console.log(error);
+    console.log("ERRO GET /admin/me:", error);
     return res.status(500).json({
       message: "Erro ao buscar administrador.",
+      error: error.message,
     });
   }
 });
 
-// LISTA TODOS OS USUÁRIOS APÓS LOGIN
 app.get("/usuarios", authMiddleware, async (req, res) => {
   try {
     const users = await prisma.user.findMany({
@@ -339,19 +342,19 @@ app.get("/usuarios", authMiddleware, async (req, res) => {
 
     return res.status(200).json(users);
   } catch (error) {
-    console.log(error);
+    console.log("ERRO GET /usuarios:", error);
     return res.status(500).json({
       message: "Erro ao buscar usuários.",
+      error: error.message,
     });
   }
 });
 
-// DELETE APENAS ADMIN
 app.delete("/usuarios/:id", authMiddleware, adminOnly, async (req, res) => {
   try {
     await prisma.user.delete({
       where: {
-        id: req.params.id,
+        id: Number(req.params.id),
       },
     });
 
@@ -359,9 +362,10 @@ app.delete("/usuarios/:id", authMiddleware, adminOnly, async (req, res) => {
       message: "Usuário deletado com sucesso!",
     });
   } catch (error) {
-    console.log(error);
+    console.log("ERRO DELETE /usuarios/:id:", error);
     return res.status(500).json({
       message: "Erro ao deletar usuário.",
+      error: error.message,
     });
   }
 });
