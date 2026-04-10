@@ -11,7 +11,13 @@ const prisma = new PrismaClient();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://cadastro-usuarios-fullstack-brown.vercel.app"
+  ],
+  credentials: true,
+}));
 
 app.get("/", (req, res) => {
   res.send("API rodando 🚀");
@@ -135,7 +141,7 @@ app.post("/usuarios", async (req, res) => {
         age: Number(age),
         email: email.toLowerCase(),
         password: hashedPassword,
-        role: "user",
+        role:"user",
       },
     });
 
@@ -167,6 +173,7 @@ app.post("/login", async (req, res) => {
         message: "E-mail e senha são obrigatórios.",
       });
     }
+
 
     const user = await prisma.user.findUnique({
       where: {

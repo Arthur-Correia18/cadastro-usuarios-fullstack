@@ -239,6 +239,15 @@ form button:hover,
   height: 22px;
 }
 
+.delete-btn:disabled {
+  cursor: not-allowed;
+  opacity: o.45;
+}
+
+.delete-btn:disabled img {
+  opacity: 0.45;
+}
+
 .admin-card {
   background: #2f2d4d;
   border-radius: 14px;
